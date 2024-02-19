@@ -3,7 +3,7 @@ package telran.java51.accounting.dto;
 import lombok.Getter;
 
 @Getter
-public class UserUpdateDto {
+public class UserEditDto {
 
 	String firstName;
 	String lastName;
