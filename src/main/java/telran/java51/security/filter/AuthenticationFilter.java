@@ -54,9 +54,8 @@ public class AuthenticationFilter implements Filter {
 
 	private boolean checkEndPoint(String method, String path) {
 		return !(HttpMethod.POST.matches(method)
-				&& (path.matches("/account/register") || path.matches("/forum/posts/tags")
-					|| path.matches("/forum/posts/period") 
-					|| path.matches("/forum/posts/author/{author}")));
+				&& (path.matches("/account/register") || path.matches("/forum/posts/\\w+(/\\w+)?")
+					));
 	}
 
 	private String[] getCredentials(String header) {
