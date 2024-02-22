@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.util.Base64;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,7 @@ import telran.java51.accounting.model.UserAccount;
 
 @Component
 @RequiredArgsConstructor
+@Order(10)
 public class AuthenticationFilter implements Filter {
 
 	final UserAccountRepository userAccountRepository;
@@ -53,9 +55,10 @@ public class AuthenticationFilter implements Filter {
 	}
 
 	private boolean checkEndPoint(String method, String path) {
-		return !(HttpMethod.POST.matches(method)
-				&& (path.matches("/account/register") || path.matches("/forum/posts/\\w+(/\\w+)?")
-					));
+		return !(
+				(HttpMethod.POST.matches(method)
+				&& path.matches("/account/register")) || path.matches("/forum/posts/\\w+(/\\w+)?")
+				);
 	}
 
 	private String[] getCredentials(String header) {
