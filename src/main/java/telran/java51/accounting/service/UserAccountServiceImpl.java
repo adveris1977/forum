@@ -12,6 +12,7 @@ import telran.java51.accounting.dto.UserEditDto;
 import telran.java51.accounting.dto.UserRegisterDto;
 import telran.java51.accounting.dto.exceptions.UserExistsException;
 import telran.java51.accounting.dto.exceptions.UserNotFoundException;
+import telran.java51.accounting.enumType.RolesType;
 import telran.java51.accounting.model.UserAccount;
 
 @Service
@@ -60,7 +61,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public RolesDto changeRolesList(String login, String role, boolean isAddRole) {
+	public RolesDto changeRolesList(String login, RolesType role, boolean isAddRole) {
 		UserAccount userAccount = userAccountRepository.findById(login).orElseThrow(UserNotFoundException::new);
 		boolean res;
 		if (isAddRole) {
