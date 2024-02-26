@@ -18,8 +18,6 @@ import telran.java51.security.model.User;
 @Order(20)
 public class AdminManagingRolesFilter implements Filter {
 	
-	
-
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {

@@ -55,6 +55,7 @@ public class AuthenticationFilter implements Filter {
 					return;
 				} 
 			}
+//			Set<String> roles = UserAccount.getRoles().stream().map(r -> r.toString()).collect(Collectors.toSet());
 			request = new WrappedRequest(request, user.getName(), user.getRoles());
 		}
 
