@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.Setter;
-import telran.java51.accounting.enumType.RolesType;
+
 
 @Getter
 @Document(collection = "users")
@@ -21,11 +21,11 @@ public class UserAccount {
 	String firstName;
 	@Setter
 	String lastName;
-	Set<RolesType> roles;
+	Set<Role> roles;
 	
 	public UserAccount() {
 		roles = new HashSet<>();
-		roles.add(RolesType.USER);
+		addRole("USER");
 	}
 
 	public UserAccount(String login, String password, String firstName, String lastName) {
@@ -36,12 +36,12 @@ public class UserAccount {
 		this.lastName = lastName;
 	}
 
-	public boolean addRole(RolesType role) {
-		return roles.add(role);
+	public boolean addRole(String role) {
+		return roles.add(Role.valueOf(role.toUpperCase()));
 	}
 
-	public boolean removeRole(RolesType role) {
-		return roles.remove(role);
+	public boolean removeRole(String role) {
+		return roles.remove(Role.valueOf(role.toUpperCase()));
 	}
 
 }
