@@ -7,5 +7,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class PostNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = -7145519422896759308L;
+	
+	public PostNotFoundException() {
+		super("Post not found");
+	}
 
+	public PostNotFoundException(String postId) {
+		super("Post " + postId + " not found");
+	}
 }

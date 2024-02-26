@@ -17,13 +17,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import telran.java51.accounting.dao.UserAccountRepository;
 import telran.java51.accounting.model.UserAccount;
+import telran.java51.post.dao.PostRepository;
+import telran.java51.post.model.Post;
 
 @Component
 @RequiredArgsConstructor
-@Order(50)
+@Order(60)
 public class DeletePostFilter implements Filter {
 	
 	final UserAccountRepository userAccountRepository;
+	final PostRepository postRepository;
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
@@ -32,12 +35,18 @@ public class DeletePostFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) resp;
 		if (checkEndPoint(request.getMethod(), request.getServletPath())) {
 			Principal principal = request.getUserPrincipal();
-			String[] arr = request.getServletPath().split("/");
-			String user = arr[arr.length - 1];
 			UserAccount userAccount = userAccountRepository
 					.findById(principal.getName()).get();
-			if (!(principal.getName().equalsIgnoreCase(user) || userAccount.getRoles().contains("MODERATOR"))) {
-				response.sendError(403, "Permission denied");
+			String[] arr = request.getServletPath().split("/");
+			String postId = arr[arr.length - 1];
+			Post post =postRepository.findById(postId).orElse(null);
+			if (post == null) {
+				response.sendError(404);
+				return;
+			}
+			if (!(userAccount.getLogin().equals(post.getAuthor()) 
+					|| userAccount.getRoles().contains("MODERATOR"))) {
+				response.sendError(403);
 				return;
 			}
 		}
