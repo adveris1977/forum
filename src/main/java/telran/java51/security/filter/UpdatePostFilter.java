@@ -18,10 +18,9 @@ import lombok.RequiredArgsConstructor;
 import telran.java51.post.dao.PostRepository;
 import telran.java51.post.model.Post;
 
-
 @Component
-@RequiredArgsConstructor
 @Order(50)
+@RequiredArgsConstructor
 public class UpdatePostFilter implements Filter {
 	
 	final PostRepository postRepository;
@@ -34,21 +33,24 @@ public class UpdatePostFilter implements Filter {
 		if (checkEndPoint(request.getMethod(), request.getServletPath())) {
 			Principal principal = request.getUserPrincipal();
 			String[] arr = request.getServletPath().split("/");
-			String postId = arr[arr.length - 1]; 
+			String postId = arr[arr.length - 1];
 			Post post = postRepository.findById(postId).orElse(null);
 			if (post == null) {
 				response.sendError(404);
 				return;
 			}
 			if (!principal.getName().equals(post.getAuthor())) {
-				response.sendError(403, "Permission denied");
+				response.sendError(403);
 				return;
 			}
 		}
 		chain.doFilter(request, response);
+
 	}
+	
 	private boolean checkEndPoint(String method, String path) {
 		return HttpMethod.PUT.matches(method) && path.matches("/forum/post/\\w+");
+
 	}
 
 }

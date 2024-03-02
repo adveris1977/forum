@@ -24,14 +24,14 @@ import telran.java51.security.model.User;
 public class DeletePostFilter implements Filter {
 	
 	final PostRepository postRepository;
-
+	
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		if (checkEndPoint(request.getMethod(), request.getServletPath())) {
-			User user = (User) request.getUserPrincipal();
+			User user =  (User) request.getUserPrincipal();
 			String[] arr = request.getServletPath().split("/");
 			String postId = arr[arr.length - 1];
 			Post post = postRepository.findById(postId).orElse(null);
@@ -47,8 +47,10 @@ public class DeletePostFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 	}
+	
 	private boolean checkEndPoint(String method, String path) {
 		return HttpMethod.DELETE.matches(method) && path.matches("/forum/post/\\w+");
+
 	}
 
 }

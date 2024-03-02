@@ -2,7 +2,6 @@ package telran.java51.security.filter;
 
 import java.io.IOException;
 
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +12,11 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import telran.java51.security.model.User;
 
 @Component
-@Order(40)
+@RequiredArgsConstructor
 public class DeleteUserFilter implements Filter {
 
 	@Override
@@ -25,13 +25,15 @@ public class DeleteUserFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		if (checkEndPoint(request.getMethod(), request.getServletPath())) {
-			User user = (User) request.getUserPrincipal();
+			User user =  (User) request.getUserPrincipal();
 			String[] arr = request.getServletPath().split("/");
 			String userName = arr[arr.length - 1];
-			if (!(user.getName().equalsIgnoreCase(userName) || user.getRoles().contains("ADMINISTRATOR"))) {
-				response.sendError(403, "Permission denied");
+			if (!(user.getRoles().contains("ADMINISTRATOR") 
+					|| user.getName().equalsIgnoreCase(userName))) {
+				response.sendError(403);
 				return;
 			}
+
 		}
 		chain.doFilter(request, response);
 
