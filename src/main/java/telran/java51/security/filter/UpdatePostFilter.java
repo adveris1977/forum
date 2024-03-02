@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 @Order(60)
-public class UpdatePostByOwnerFilter implements Filter {
+public class UpdatePostFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
